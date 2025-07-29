@@ -1,4 +1,4 @@
-# AgentCore Memory Viewer
+# AgentCore Memory Explorer
 
 A modern web UI for exploring and visualizing AWS Bedrock AgentCore memory data. Built with Flask and HTMX for a responsive, interactive experience.
 
@@ -172,4 +172,4 @@ The application runs in debug mode by default during development. Check the cons
 
 ## License
 
-This project is part of the AWS Bedrock AgentCore ecosystem and follows standard AWS SDK practices.
+MIT
