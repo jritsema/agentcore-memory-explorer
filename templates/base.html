@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}AgentCore Memory Explorer{% endblock %}</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <style>
+      .loading {
+        opacity: 0.7;
+        pointer-events: none;
+      }
+      .htmx-request .loading-indicator {
+        display: inline;
+      }
+      .loading-indicator {
+        display: none;
+      }
+      .spinner {
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid #3498db;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        animation: spin 1s linear infinite;
+        display: inline-block;
+        margin-right: 8px;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        display: none;
+      }
+      .htmx-request .loading-overlay {
+        display: flex;
+      }
+      .content-container {
+        position: relative;
+      }
+      .htmx-indicator {
+        display: none;
+      }
+      .htmx-request .htmx-indicator {
+        display: inline-block;
+      }
+      .htmx-request .refresh-icon {
+        display: none !important;
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <nav class="bg-blue-600 text-white p-4 shadow-lg">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-xl font-bold">
+          <a href="/" class="hover:text-blue-200">AgentCore Memory Explorer</a>
+        </h1>
+        <div class="text-sm">
+          <span class="loading-indicator">
+            <div class="spinner"></div>
+            Loading...
+          </span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mx-auto p-6">
+      <div class="bg-white rounded-lg shadow-md p-6 content-container">
+        {% block content %}{% endblock %}
+        <div class="loading-overlay">
+          <div class="text-center">
+            <div
+              class="spinner mx-auto mb-2"
+              style="width: 32px; height: 32px; border-width: 3px"
+            ></div>
+            <div class="text-gray-600">Loading data...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Add loading states for HTMX requests
+      document.body.addEventListener("htmx:beforeRequest", function (evt) {
+        evt.target.classList.add("loading");
+      });
+
+      document.body.addEventListener("htmx:afterRequest", function (evt) {
+        evt.target.classList.remove("loading");
+      });
+    </script>
+  </body>
+</html>

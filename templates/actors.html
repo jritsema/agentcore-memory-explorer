@@ -1,0 +1,103 @@
+<div class="space-y-4">
+  <div class="flex justify-between items-center">
+    <div>
+      <h3 class="text-2xl font-bold text-gray-900">Actors</h3>
+      <p class="text-sm text-gray-600">Memory ID: {{ memory_id }}</p>
+    </div>
+    <div class="flex items-center space-x-2">
+      <span class="text-sm text-gray-500"
+        >{{ actors|length }} actors found</span
+      >
+      <button
+        hx-get="/memory/{{ memory_id }}/actors"
+        hx-target="#content"
+        hx-swap="innerHTML"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition duration-200 flex items-center space-x-1"
+        title="Refresh actors list"
+      >
+        <svg
+          class="w-4 h-4 refresh-icon"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          ></path>
+        </svg>
+        <div class="htmx-indicator">
+          <div class="spinner"></div>
+        </div>
+        <span class="button-text">Refresh</span>
+      </button>
+      <button
+        hx-get="/memories"
+        hx-target="#content"
+        hx-swap="innerHTML"
+        class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm transition duration-200 flex items-center"
+      >
+        <span class="button-text">← Back to Memories</span>
+        <div class="htmx-indicator ml-2">
+          <div class="spinner"></div>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  {% if actors %}
+  <div class="grid gap-3">
+    {% for actor in actors %}
+    <div
+      class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+    >
+      <div class="flex justify-between items-center">
+        <div class="flex-1">
+          <h4 class="font-semibold text-lg text-gray-900">
+            {{ actor.actorId }}
+          </h4>
+          <p class="text-sm text-gray-600 mt-1">
+            Actor identifier in memory store
+          </p>
+        </div>
+        <button
+          hx-get="/memory/{{ memory_id }}/actor/{{ actor.actorId }}/sessions"
+          hx-target="#content"
+          hx-swap="innerHTML"
+          class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm font-medium transition duration-200 flex items-center"
+        >
+          <span class="button-text">View Sessions</span>
+          <div class="htmx-indicator ml-2">
+            <div class="spinner"></div>
+          </div>
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-12">
+    <div class="text-gray-400 mb-4">
+      <svg
+        class="mx-auto h-12 w-12"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+        />
+      </svg>
+    </div>
+    <h3 class="text-lg font-medium text-gray-900 mb-2">No actors found</h3>
+    <p class="text-gray-500">
+      No actors are currently available in this memory store.
+    </p>
+  </div>
+  {% endif %}
+</div>

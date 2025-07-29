@@ -1,0 +1,110 @@
+<div class="space-y-4">
+  <div class="flex justify-between items-center">
+    <div>
+      <h3 class="text-2xl font-bold text-gray-900">Sessions</h3>
+      <p class="text-sm text-gray-600">
+        Actor: {{ actor_id }} | Memory: {{ memory_id }}
+      </p>
+    </div>
+    <div class="flex items-center space-x-2">
+      <span class="text-sm text-gray-500"
+        >{{ sessions|length }} sessions found</span
+      >
+      <button
+        hx-get="/memory/{{ memory_id }}/actor/{{ actor_id }}/sessions"
+        hx-target="#content"
+        hx-swap="innerHTML"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition duration-200 flex items-center space-x-1"
+        title="Refresh sessions list"
+      >
+        <svg
+          class="w-4 h-4 refresh-icon"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          ></path>
+        </svg>
+        <div class="htmx-indicator">
+          <div class="spinner"></div>
+        </div>
+        <span class="button-text">Refresh</span>
+      </button>
+      <button
+        hx-get="/memory/{{ memory_id }}/actors"
+        hx-target="#content"
+        hx-swap="innerHTML"
+        class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm transition duration-200 flex items-center"
+      >
+        <span class="button-text">← Back to Actors</span>
+        <div class="htmx-indicator ml-2">
+          <div class="spinner"></div>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  {% if sessions %}
+  <div class="grid gap-3">
+    {% for session in sessions %}
+    <div
+      class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+    >
+      <div class="flex justify-between items-center">
+        <div class="flex-1">
+          <h4 class="font-semibold text-lg text-gray-900">
+            {{ session.sessionId }}
+          </h4>
+          <div class="flex items-center mt-2 space-x-4">
+            <span class="text-sm text-gray-600"
+              >Actor: {{ session.actorId }}</span
+            >
+            <span class="text-xs text-gray-500"
+              >Created: {{ session.createdAt | format_datetime }}</span
+            >
+          </div>
+        </div>
+        <button
+          hx-get="/memory/{{ memory_id }}/actor/{{ actor_id }}/session/{{ session.sessionId }}/events"
+          hx-target="#content"
+          hx-swap="innerHTML"
+          class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded text-sm font-medium transition duration-200 flex items-center"
+        >
+          <span class="button-text">View Events</span>
+          <div class="htmx-indicator ml-2">
+            <div class="spinner"></div>
+          </div>
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-12">
+    <div class="text-gray-400 mb-4">
+      <svg
+        class="mx-auto h-12 w-12"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+        />
+      </svg>
+    </div>
+    <h3 class="text-lg font-medium text-gray-900 mb-2">No sessions found</h3>
+    <p class="text-gray-500">
+      No conversation sessions are available for this actor.
+    </p>
+  </div>
+  {% endif %}
+</div>

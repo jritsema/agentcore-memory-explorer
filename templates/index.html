@@ -1,0 +1,65 @@
+{% extends "base.html" %} {% block content %}
+<div class="space-y-6">
+  <div class="text-center">
+    <h2 class="text-3xl font-bold text-gray-900 mb-4">
+      AgentCore Memory Explorer
+    </h2>
+    <p class="text-gray-600 mb-8">
+      Explore and visualize AWS Bedrock AgentCore memory data
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+      <h3 class="text-lg font-semibold text-blue-800 mb-2">Memories</h3>
+      <p class="text-blue-600 text-sm">
+        Top-level memory stores containing agent data
+      </p>
+    </div>
+    <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+      <h3 class="text-lg font-semibold text-green-800 mb-2">
+        Actors & Sessions
+      </h3>
+      <p class="text-green-600 text-sm">
+        Individual actors and their conversation sessions
+      </p>
+    </div>
+    <div class="bg-purple-50 p-6 rounded-lg border border-purple-200">
+      <h3 class="text-lg font-semibold text-purple-800 mb-2">Events</h3>
+      <p class="text-purple-600 text-sm">
+        Detailed conversation events and interactions
+      </p>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <button
+      hx-get="/memories"
+      hx-target="#content"
+      hx-swap="innerHTML"
+      hx-indicator="#loading-main"
+      class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center mx-auto"
+    >
+      <span class="button-text">Start Exploring Memories</span>
+      <div id="loading-main" class="htmx-indicator ml-2">
+        <div class="spinner"></div>
+      </div>
+    </button>
+  </div>
+
+  <div id="content" class="mt-8 min-h-[200px] relative">
+    <!-- Dynamic content will be loaded here -->
+    <div
+      class="htmx-indicator absolute inset-0 flex items-center justify-center"
+    >
+      <div class="text-center">
+        <div
+          class="spinner mx-auto mb-2"
+          style="width: 32px; height: 32px; border-width: 3px"
+        ></div>
+        <div class="text-gray-600">Loading data...</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

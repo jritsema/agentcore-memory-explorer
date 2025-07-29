@@ -1,0 +1,27 @@
+<div class="text-center py-12">
+  <div class="text-red-400 mb-4">
+    <svg
+      class="mx-auto h-12 w-12"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"
+      />
+    </svg>
+  </div>
+  <h3 class="text-lg font-medium text-gray-900 mb-2">Error</h3>
+  <p class="text-gray-500 mb-4">{{ message }}</p>
+  <button
+    hx-get="/memories"
+    hx-target="#content"
+    hx-swap="innerHTML"
+    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition duration-200"
+  >
+    Try Again
+  </button>
+</div>

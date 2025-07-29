@@ -1,0 +1,95 @@
+<div class="space-y-4">
+  <div class="flex justify-between items-center">
+    <h3 class="text-2xl font-bold text-gray-900">Memory Stores</h3>
+    <div class="flex items-center space-x-3">
+      <span class="text-sm text-gray-500"
+        >{{ memories|length }} memories found</span
+      >
+      <button
+        hx-get="/memories"
+        hx-target="#content"
+        hx-swap="innerHTML"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm transition duration-200 flex items-center space-x-1"
+        title="Refresh memories list"
+      >
+        <svg
+          class="w-4 h-4 refresh-icon"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          ></path>
+        </svg>
+        <div class="htmx-indicator">
+          <div class="spinner"></div>
+        </div>
+        <span class="button-text">Refresh</span>
+      </button>
+    </div>
+  </div>
+
+  {% if memories %}
+  <div class="grid gap-4">
+    {% for memory in memories %}
+    <div
+      class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+    >
+      <div class="flex justify-between items-start">
+        <div class="flex-1">
+          <h4 class="font-semibold text-lg text-gray-900">{{ memory.id }}</h4>
+          <p class="text-sm text-gray-600 mt-1">ARN: {{ memory.arn }}</p>
+          <div class="flex items-center mt-2 space-x-4">
+            <span
+              class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium {% if memory.status == 'ACTIVE' %}bg-green-100 text-green-800 {% elif memory.status == 'CREATING' %}bg-yellow-100 text-yellow-800 {% elif memory.status == 'FAILED' %}bg-red-100 text-red-800 {% else %}bg-gray-100 text-gray-800{% endif %}"
+            >
+              {{ memory.status }}
+            </span>
+            <span class="text-xs text-gray-500"
+              >Created: {{ memory.createdAt | format_datetime }}</span
+            >
+          </div>
+        </div>
+        <button
+          hx-get="/memory/{{ memory.id }}/actors"
+          hx-target="#content"
+          hx-swap="innerHTML"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition duration-200 flex items-center"
+        >
+          <span class="button-text">View Actors</span>
+          <div class="htmx-indicator ml-2">
+            <div class="spinner"></div>
+          </div>
+        </button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-12">
+    <div class="text-gray-400 mb-4">
+      <svg
+        class="mx-auto h-12 w-12"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-6a2 2 0 00-2 2v3a2 2 0 01-2 2H8a2 2 0 01-2-2v-3a2 2 0 00-2-2H4"
+        />
+      </svg>
+    </div>
+    <h3 class="text-lg font-medium text-gray-900 mb-2">No memories found</h3>
+    <p class="text-gray-500">
+      No memory stores are currently available in your AWS account.
+    </p>
+  </div>
+  {% endif %}
+</div>
