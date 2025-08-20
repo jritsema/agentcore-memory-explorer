@@ -11,6 +11,8 @@ A modern web UI for exploring and visualizing AWS Bedrock AgentCore memory data.
 - **Real-time Navigation**: Smooth HTMX-powered interface with no page reloads
 - **Responsive Design**: Clean, modern UI built with Tailwind CSS
 
+![AgentCore Memory Explorer UI](./ui.png)
+
 ## Architecture
 
 The application provides a hierarchical view of AgentCore memory data:
